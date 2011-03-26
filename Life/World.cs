@@ -37,8 +37,8 @@ namespace Life
       }
       else if (already_exists)
       {
-        var touched_cell = cell_locations.Single(x => x.Key.Equals(touched_location));
-        touched_cell.Value.Touched();
+        //var touched_cell = cell_locations.Single(x => x.Key.Equals(touched_location));
+        //touched_cell.Value.Touched();
       }
       else
       {
