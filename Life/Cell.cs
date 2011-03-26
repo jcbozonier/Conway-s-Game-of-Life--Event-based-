@@ -66,5 +66,19 @@ namespace Life
       neighbor_count++;
     }
 
+
+    public void Touched()
+    {
+      if (is_dead)
+      {
+        is_dead = false;
+        I_was_born();
+      }
+      else
+      {
+        is_dead = true;
+        I_died();
+      }
+    }
   }
 }

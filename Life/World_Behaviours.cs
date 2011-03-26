@@ -29,6 +29,7 @@ namespace Life
 
       var world = World.Brimming_with_life();
       world.When_a_cell_dies = location => location_cell_died_at = location;
+      world.When_a_cell_comes_to_life = location => { };
       world.TouchCellAt(Location.OfOrigin());
       world.MomentPassed();
 
@@ -89,6 +90,24 @@ namespace Life
 
       Assert.That(cell_birth_locations, Is.EquivalentTo(Enumerable.Empty<Location>()), "nothing eventful should have happened");
       Assert.That(cell_death_locations.ToArray(), Is.Empty, "nothing eventful should have happened");
+    }
+
+    [Test]
+    public void When_touching_a_cell_to_make_it_alive_and_then_dead()
+    {
+      var cell_death_locations = new List<Location>();
+      var cell_birth_locations = new List<Location>();
+
+      var world = World.That_is_a_barren_wasteland();
+      world.When_a_cell_dies = location => cell_death_locations.Add(location);
+      world.When_a_cell_comes_to_life = location => cell_birth_locations.Add(location);
+
+      world.TouchCellAt(Location.At(2, 1));
+      world.TouchCellAt(Location.At(2, 1));
+      world.MomentPassed();
+
+      Assert.That(cell_death_locations, Is.EquivalentTo(new Location[] { }), "it should not cause any death events");
+      Assert.That(cell_birth_locations, Is.EquivalentTo(new Location[] { }), "it should not cause any birth events");
     }
   }
 }

@@ -27,8 +27,19 @@ namespace Life
 
     public void TouchCellAt(Location touched_location)
     {
-      if (has_life)
-        A_cell_died(touched_location);
+      var was_just_born = born_cell_locations.Any(x => x.Key.Equals(touched_location));
+      var already_exists = cell_locations.Any(x=>x.Key.Equals(touched_location));
+
+      if (was_just_born)
+      {
+        born_cell_locations.RemoveAll(x => x.Key.Equals(touched_location));
+        cell_locations.RemoveAll(x => x.Key.Equals(touched_location));
+      }
+      else if (already_exists)
+      {
+        var touched_cell = cell_locations.Single(x => x.Key.Equals(touched_location));
+        touched_cell.Value.Touched();
+      }
       else
       {
         var created_cell = Cell.ThatsAlive();
@@ -58,7 +69,7 @@ namespace Life
 
     public static World Brimming_with_life()
     {
-      return new World() {has_life = true};
+      return new World();
     }
 
     public void MomentPassed()

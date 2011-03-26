@@ -143,5 +143,27 @@ namespace Life
 
       Assert.That(cell_born, "it should count neighbors up from zero and not go into negatives.");
     }
+
+    [Test]
+    public void When_the_hand_of_god_touches_a_live_cell()
+    {
+      var cell_died = false;
+      var cell = Cell.ThatsAliveWithNeighbors(0);
+      cell.When_it_dies = () => cell_died = true;
+      cell.Touched();
+
+      Assert.That(cell_died, "Touching a live cell should kill it.");
+    }
+
+    [Test]
+    public void When_the_hand_of_god_touches_a_dead_cell()
+    {
+      var cell_was_born = false;
+      var cell = Cell.ThatsDeadWithNeighbors(0);
+      cell.When_its_born = () => cell_was_born = true;
+      cell.Touched();
+
+      Assert.That(cell_was_born, "Touching a dead cell should bring it back to life.");
+    }
   }
 }
